@@ -5,5 +5,6 @@ Follow this Design Recipe to design the schema for a single table. The outline i
  - Decide the column types.
  - Write the SQL to create the table.
 
-Then create the databse.
+Then create the databse, and run the sql file
+> createdb database_name
 > psql -h 127.0.0.1 database_name < albums_table.sql
