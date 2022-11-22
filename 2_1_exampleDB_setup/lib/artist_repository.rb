@@ -6,14 +6,11 @@ class ArtistRepository
     results = DatabaseConnection.exec_params(sql, [])
     return results.map { |el| make_artist(el) }
   end
-
-  # Gets a single record by its ID
-  # One argument: the id (number)
+  
   def find(id)
-    # Executes the SQL query:
-    # SELECT id, name, genre FROM artists WHERE id = $1;
-
-    # Returns a single Student object.
+    sql = "SELECT id, name, genre FROM artists WHERE id = $1;"
+    results = DatabaseConnection.exec_params(sql, [id])
+    return results.map { |el| make_artist(el) }[0]
   end
 
   # Add more methods below for each operation you'd like to implement.

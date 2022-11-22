@@ -21,4 +21,8 @@ RSpec.describe ArtistRepository do
         artists = repo.all
         expect(artists.first.id).to eq '1'
     end
+    it "can return the record with id 2" do
+        repo = ArtistRepository.new
+        expect(repo.find(2).id).to eq '2'
+    end
 end
