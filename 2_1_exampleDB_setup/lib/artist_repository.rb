@@ -2,17 +2,9 @@ require_relative "artist"
 
 class ArtistRepository
   def all
-    artists = []
     sql = "SELECT id, name, genre FROM artists;"
     results = DatabaseConnection.exec_params(sql, [])
-    results.each do |record|
-        artist = Artist.new
-        artist.id = record["id"]
-        artist.name = record["name"]
-        artist.genre = record["genre"]
-        artists << artist
-    end
-    return artists
+    return results.map { |el| make_artist(el) }
   end
 
   # Gets a single record by its ID
@@ -37,5 +29,15 @@ class ArtistRepository
 
   def delete(artist)
     # DELETE artists WHERE id = artist.id
+  end
+
+  private
+
+  def make_artist(hash)
+    artist = Artist.new
+    artist.id = hash["id"]
+    artist.name = hash["name"]
+    artist.genre = hash["genre"]
+    return artist
   end
 end
