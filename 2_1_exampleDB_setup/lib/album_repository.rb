@@ -1,26 +1,10 @@
-require_relative 'album'
+require_relative "album"
+
 class AlbumRepository
-
-  # Selecting all records
-  # No arguments
   def all
-    # Executes the SQL query:
-    # SELECT id, title, release_year, artist_id FROM albums;
-
-    # Returns an array of album objects.
-
-    albums = []
     sql = "SELECT id, title, release_year, artist_id FROM albums;"
     results = DatabaseConnection.exec_params(sql, [])
-    results.each do |record|
-      album = Album.new
-      album.id = record["id"]
-      album.title = record["title"]
-      album.release_year = record["release_year"]
-      album.artist_id = record["artist_id"]
-      albums << album
-    end
-    return albums
+    return results.map { |el| make_album(el) }
   end
 
   # Gets a single record by its ID
@@ -45,5 +29,16 @@ class AlbumRepository
 
   def delete(album)
     # DELETE albums WHERE id = album.id
+  end
+
+  private
+
+  def make_album(hash)
+    album = Album.new
+    album.id = hash["id"]
+    album.title = hash["title"]
+    album.release_year = hash["release_year"]
+    album.artist_id = hash["artist_id"]
+    return album
   end
 end
