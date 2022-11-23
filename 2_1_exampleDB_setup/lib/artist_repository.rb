@@ -4,20 +4,20 @@ class ArtistRepository
   def all
     sql = "SELECT id, name, genre FROM artists;"
     results = DatabaseConnection.exec_params(sql, [])
-    return results.map { |el| make_artist(el) }
+    return make_artist(results)
   end
   
   def find(id)
     sql = "SELECT id, name, genre FROM artists WHERE id = $1;"
     results = DatabaseConnection.exec_params(sql, [id])
-    return results.map { |el| make_artist(el) }[0]
+    return make_artist(results)[0]
   end
 
-  # Add more methods below for each operation you'd like to implement.
-
   def create(artist)
-    # adds artist to the table
-    # INSERT INTO artists (id, name, genre) VALUES (artist.id, artist.name, artist.genre)
+    sql = "INSERT INTO artists (name, genre) VALUES ($1, $2)"
+    params = [artist.name, artist.genre]
+    DatabaseConnection.exec_params(sql, params)
+    return nil
   end
 
   def update(artist)
@@ -30,11 +30,7 @@ class ArtistRepository
 
   private
 
-  def make_artist(hash)
-    artist = Artist.new
-    artist.id = hash["id"]
-    artist.name = hash["name"]
-    artist.genre = hash["genre"]
-    return artist
+  def make_artist(arr_of_hash)
+    return arr_of_hash.map { |el| Artist.new(el) }
   end
 end
