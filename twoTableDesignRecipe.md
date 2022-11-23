@@ -79,6 +79,7 @@ CREATE TABLE albums (
   constraint fk_artist foreign key(artist_id)
     references artists(id)
     on delete cascade
+-- configures the database to automatically remove related records referencing it (e.g delete all related albums), so there are no "orphans" records 
 );
 
 ```
