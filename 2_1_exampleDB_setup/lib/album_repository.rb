@@ -4,20 +4,18 @@ class AlbumRepository
   def all
     sql = "SELECT id, title, release_year, artist_id FROM albums;"
     results = DatabaseConnection.exec_params(sql, [])
-    return results.map { |el| make_album(el) }
+    return make_album(results)
   end
   
   def find(id)
     sql =  "SELECT id, title, release_year, artist_id FROM albums WHERE id = $1;"
     results = DatabaseConnection.exec_params(sql, [id])
-    return results.map { |el| make_album(el) }[0]
+    return make_album(results)[0]
   end
 
-  # Add more methods below for each operation you'd like to implement.
-
   def create(album)
-    # adds album to the table
-    # INSERT INTO albums (title, release_year, artist_id) VALUES (album.title, album.release_year, album.artist_id)
+    sql = "INSERT INTO albums (title, release_year, artist_id) VALUES ($1, $2, $3)" 
+    DatabaseConnection.exec_params(sql, [album.title, album.release_year, album.artist_id])
   end
 
   def update(album)
@@ -30,12 +28,7 @@ class AlbumRepository
 
   private
 
-  def make_album(hash)
-    album = Album.new
-    album.id = hash["id"]
-    album.title = hash["title"]
-    album.release_year = hash["release_year"]
-    album.artist_id = hash["artist_id"]
-    return album
+  def make_album(arr_of_hash)
+    return arr_of_hash.map { |el| Album.new(el)}
   end
 end
