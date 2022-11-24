@@ -25,11 +25,14 @@ class Application
     @io.puts "What would you like to do?"
     @io.puts "1 - List all albums"
     @io.puts "2 - List all artists"
+    @io.puts "3 - Find albums by an artist"
     @io.puts ""
     @io.print "Enter your choice:"
     choice = @io.gets.to_i
     if choice == 1
       show_albums
+    elsif choice == 3
+      find_with_albums
     else
       show_artists
     end
@@ -43,6 +46,12 @@ class Application
   def show_artists
     artists = @artist_repository.all
     artists.each { |el| @io.puts "#{el.id} - #{el.name} (#{el.genre})" }
+  end
+  def find_with_albums
+    @io.print "Enter the name of an artist: "
+    artist_name = @io.gets.chomp
+    artist = @artist_repository.find_with_albums(artist_name)
+    @io.puts artist.to_s
   end
 end
 
