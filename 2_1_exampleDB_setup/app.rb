@@ -1,5 +1,6 @@
 require_relative "./lib/album_repository"
 require_relative "./lib/artist_repository"
+require_relative "./lib/database_connection"
 
 class Application
 
@@ -16,14 +17,32 @@ class Application
     @artist_repository = artist_repository
   end
 
-  def run
-    # "Runs" the terminal application
-    # so it can ask the user to enter some input
-    # and then decide to run the appropriate action
-    # or behaviour.
+  attr_reader :io, :album_repository, :artist_repository
 
-    # Use `@io.puts` or `@io.gets` to
-    # write output and ask for user input.
+  def run
+    @io.puts "Welcome to the music library manager!"
+    @io.puts ""
+    @io.puts "What would you like to do?"
+    @io.puts "1 - List all albums"
+    @io.puts "2 - List all artists"
+    @io.puts ""
+    @io.print "Enter your choice:"
+    choice = @io.gets.to_i
+    if choice == 1
+      show_albums
+    else
+      show_artists
+    end
+  end
+
+  private
+  def show_albums
+    albums = @album_repository.all
+    albums.each { |el| @io.puts "#{el.id} - #{el.title}" }
+  end
+  def show_artists
+    artists = @artist_repository.all
+    artists.each { |el| @io.puts "#{el.id} - #{el.name} (#{el.genre})" }
   end
 end
 
