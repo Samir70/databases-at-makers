@@ -18,15 +18,26 @@ RSpec.describe ArtistRepository do
     end
     it "initially has correct data for first artist" do
       repo = ArtistRepository.new
-      artists = repo.all
-      expect(artists.first.id).to eq "1"
+      artist = repo.all.first
+      expect(artist.id).to eq 1
     end
   end
 
   describe "#find" do
     it "can return the record with id 2" do
       repo = ArtistRepository.new
-      expect(repo.find(2).id).to eq "2"
+      expect(repo.find(2).id).to eq 2
+    end
+  end
+
+  describe "#find_with_albums" do
+    it "returns a list of all albums by 'Nina Simone'" do
+      repo = ArtistRepository.new
+      result = repo.find_with_albums("Nina Simone")
+      expect(result.id).to eq 4
+      expect(result.name).to eq "Nina Simone"
+      albums = result.albums.map { |el| el.title }
+      expect(albums).to eq ["I Put a Spell on You", "Baltimore", "Here Comes the Sun", "Fodder on My Wings"]
     end
   end
 

@@ -19,17 +19,17 @@ RSpec.describe AlbumRepository do
     it "has correct data for first album" do
       ml = AlbumRepository.new
       albums = ml.all
-      expect(albums.first.id).to eq "1"
+      expect(albums.first.id).to eq 1
       expect(albums.first.title).to eq "Doolittle"
-      expect(albums.first.release_year).to eq "1989"
-      expect(albums.first.artist_id).to eq "1"
+      expect(albums.first.release_year).to eq 1989
+      expect(albums.first.artist_id).to eq 1
     end
   end
 
   describe "#find" do
     it "can return the album with id 4" do
       ml = AlbumRepository.new
-      expect(ml.find(4).id).to eq "4"
+      expect(ml.find(4).id).to eq 4
     end
     it "returns nil if no album with given id" do
       ml = AlbumRepository.new
